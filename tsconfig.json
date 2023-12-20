@@ -1,11 +1,46 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
+  "compilerOptions": {
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "noUnusedLocals": false,
+    "importHelpers": false,
+    "lib": ["esnext", "dom"],
+    "baseUrl": ".",
+    // "typeRoots": ["@types", "./types"],
+    "paths": {
+      "@/*": ["./src/*"]
     },
-    {
-      "path": "./tsconfig.app.json"
-    }
+    "types": [
+      "vite/client"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.jsx",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "components/**/*.ts",
+    "components/**/*.d.ts",
+    "components/**/*.jsx",
+    "components/**/*.tsx",
+    "components/**/*.vue",
+    "build/**/*.ts",
+    "build/**/*.d.ts",
+    "auto-import/*.d.ts",
+    "types/**/*.d.ts",
+    "types/*.d.ts",
+    "legacy.d.ts",
+    "shims-vue.d.ts"
   ]
 }
