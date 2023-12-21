@@ -22,7 +22,7 @@ defineProps({
 })
 const inputText = ref('')
 const inputBoxFocus = ref<boolean>(false)
-const emit = defineEmits(['tipsChosen','input'])
+const emit = defineEmits(['tipsChosen', 'input'])
 
 const tipsShow = computed(() => {
   if (inputText.value.trim().length > 0 && inputBoxFocus.value) {
@@ -32,27 +32,29 @@ const tipsShow = computed(() => {
   }
 })
 
-const documentClickHandle = (e) => {
+const documentClickHandle = (e: any) => {
   if (e.target.className.includes('tipsEle')) {
     inputBoxFocus.value = true
   } else {
     inputBoxFocus.value = false
   }
 }
-const tipsClickHandle = (tip:any) => {
+const tipsClickHandle = (tip: any) => {
   emit('tipsChosen', tip)
-},
-  onMounted(() => {
-    document.addEventListener('click', documentClickHandle, false)
-  })
+}
 
 onDeactivated(() => {
   document.removeEventListener('click', documentClickHandle, false)
 })
-
-watch(()=>inputText.value,(newVal,oldVal)=>{
-  emit('input',newVal);
+onMounted(() => {
+  document.addEventListener('click', documentClickHandle, false)
 })
+watch(
+  () => inputText.value,
+  (newVal) => {
+    emit('input', newVal)
+  }
+)
 </script>
 
 <style scoped lang="less">

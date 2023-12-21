@@ -1,76 +1,68 @@
 <template>
-    <li class="GoodsItem">
-      <div class="imgBox">
-        <img :src="img" alt="商品图片" @click="navTo('/mall/goods/'+id)"/>
-      </div>
-      <div class="goodsInfo">
-        <span class="goodsName ellipsis" @click="navTo('/mall/goods/'+id)">{{name}}</span>
-        <span class="price">{{'¥'+price}}</span>
-      </div>
-    </li>
+  <li class="GoodsItem">
+    <div class="imgBox">
+      <img :src="img" alt="商品图片" @click="navTo('/mall/goods/' + id)" />
+    </div>
+    <div class="goodsInfo">
+      <span class="goodsName ellipsis" @click="navTo('/mall/goods/' + id)">{{ name }}</span>
+      <span class="price">{{ '¥' + price }}</span>
+    </div>
+  </li>
 </template>
 
-<script>
-export default {
-  name: 'GoodsItem',
-  props:{
-    id:{
-      type:Number,
-      default:0
-    },
-    img:{
-      type:String,
-      default:''
-    },
-    name:{
-      type:String,
-      default:''
-    },
-    price:{
-      type:Number,
-      default:0
-    },
+<script lang="ts" setup>
+defineProps({
+  id: {
+    type: Number,
+    default: 0
   },
-  data(){
-    return{
-    }
+  img: {
+    type: String,
+    default: ''
   },
-  methods:{
-    navTo(route){
-      this.$router.push(route);
-    },
+  name: {
+    type: String,
+    default: ''
+  },
+  price: {
+    type: Number,
+    default: 0
   }
+})
+const router = useRouter()
+const navTo = (route: string) => {
+  router.push({ path: route })
 }
 </script>
 
 <style scoped lang="less">
-@import "../assets/css/var.less";
-.GoodsItem{
+@import '../assets/css/var.less';
+.GoodsItem {
   display: inline-block;
   width: 266px;
   height: 360px;
   overflow: hidden;
-  &:hover{
-    img{
-      transform:scale(1.05);
+  &:hover {
+    img {
+      transform: scale(1.05);
     }
   }
-  .imgBox{
+  .imgBox {
     width: 100%;
     height: 266px;
     overflow: hidden;
-    img{
+    img {
       width: 100%;
       height: 100%;
       cursor: pointer;
-      transition:transform 0.5s;
+      transition: transform 0.5s;
     }
   }
-  .goodsInfo{
+  .goodsInfo {
     width: 100%;
     height: 60px;
     font-size: 14px;
-    .goodsName{
+    .goodsName {
       display: block;
       text-align: center;
       cursor: pointer;
@@ -78,14 +70,14 @@ export default {
       margin-bottom: 10px;
       font-weight: 600;
       line-height: 20px;
-      &:hover{
-        color:@thirdColor;
+      &:hover {
+        color: @thirdColor;
       }
     }
-    .price{
+    .price {
       display: block;
       text-align: center;
-      color:@falseColor;
+      color: @falseColor;
     }
   }
 }
