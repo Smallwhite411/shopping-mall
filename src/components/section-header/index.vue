@@ -26,7 +26,7 @@ defineProps({
 </script>
 
 <style scoped lang="less">
-@import '../assets/css/var.less';
+@import '../../assets/css/var.less';
 .SectionHeader {
   width: 100%;
   height: 66px;

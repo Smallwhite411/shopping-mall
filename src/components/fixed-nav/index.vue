@@ -13,7 +13,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-@import '../assets/css/var.less';
+@import '../../assets/css/var.less';
 .FixedNav {
   position: fixed;
   top: 0;

@@ -56,7 +56,7 @@ watch(
 </script>
 
 <style scoped lang="less">
-@import '../assets/css/var.less';
+@import '../../assets/css/var.less';
 .NumberInput {
   border: 1px solid @borderColor;
   width: 135px;

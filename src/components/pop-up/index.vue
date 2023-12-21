@@ -38,7 +38,7 @@ const closePopup = () => {
 </script>
 
 <style scoped lang="less">
-@import '../assets/css/var.less';
+@import '../../assets/css/var.less';
 .PopupWrapper {
   position: fixed;
   top: 0;

@@ -36,7 +36,7 @@ const navTo = (route: string) => {
 </script>
 
 <style scoped lang="less">
-@import '../assets/css/var.less';
+@import '../../assets/css/var.less';
 .GoodsItem {
   display: inline-block;
   width: 266px;

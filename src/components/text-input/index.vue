@@ -35,7 +35,7 @@ watch(
 </script>
 
 <style scoped lang="less">
-@import '../assets/css/var.less';
+@import '../../assets/css/var.less';
 .TextInput {
   border: 1px solid @borderColor;
   padding: 6px 10px;

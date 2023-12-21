@@ -1,9 +1,15 @@
 <template>
   <div class="MallIndex">
     <FadeSwiper class="swiperBox" :width="clientWidth" height="420px">
-      <img class="banner" slot="item1" src="../../assets/img/banner1.jpg" />
-      <img class="banner" slot="item2" src="../../assets/img/banner2.jpg" />
-      <img class="banner" slot="item3" src="../../assets/img/banner3.jpg" />
+      <slot name="item1">
+        <img class="banner" src="../../assets/img/banner1.jpg" />
+      </slot>
+      <slot name="item2">
+        <img class="banner" src="../../assets/img/banner2.jpg" />
+      </slot>
+      <slot name="item3">
+        <img class="banner" src="../../assets/img/banner3.jpg" />
+      </slot>
     </FadeSwiper>
     <section class="newGoods section">
       <SectionHeader title="新品首发" tips="周一周四上新，为你寻觅世间好物" moreText="更多新品>" />
@@ -12,21 +18,22 @@
         :showWidth="266 * 4 + 10 * 3"
         :height="360"
       >
-        <ul
-          class="goodsList"
-          :style="{ width: `${266 * goodsList.length + 10 * (goodsList.length - 1)}px` }"
-          slot="list"
-        >
-          <GoodsItem
-            v-for="(item, index) in goodsList"
-            :style="{ marginRight: (index + 1) % 4 === 0 ? '0px' : '10px' }"
-            :key="+item.id"
-            :id="item.id"
-            :img="item.img"
-            :name="item.name"
-            :price="item.price"
-          />
-        </ul>
+        <slot name="list">
+          <ul
+            class="goodsList"
+            :style="{ width: `${266 * goodsList.length + 10 * (goodsList.length - 1)}px` }"
+          >
+            <GoodsItem
+              v-for="(item, index) in goodsList"
+              :style="{ marginRight: (index + 1) % 4 === 0 ? '0px' : '10px' }"
+              :key="+item.id"
+              :id="item.id"
+              :img="item.img"
+              :name="item.name"
+              :price="item.price"
+            />
+          </ul>
+        </slot>
       </Slick>
     </section>
     <section class="flashSale section">
@@ -46,7 +53,7 @@
           <div class="allBtn">查看全部 ></div>
         </div>
         <ul class="right">
-          <li v-for="(item, index) in goodsList.slice(0, 4)" :key="item.id">
+          <li v-for="item in goodsList.slice(0, 4)" :key="item.id">
             <img class="leftImg" :src="item.img" />
             <div class="rightBox">
               <p class="goodsName ellipsis" @click="navTo('/mall/goods/' + item.id)">
@@ -101,50 +108,58 @@
           imgSrc="http://yanxuan.nosdn.127.net/0266209ded1751f599fe0dc21bb33e02.jpg"
           class="left"
         >
-          <div class="makerInfo" slot="otherEle">
-            <p class="large">Adidas制造商</p>
-            <hr />
-            <p class="small">35元起</p>
-          </div>
+          <slot name="otherEle">
+            <div class="makerInfo">
+              <p class="large">Adidas制造商</p>
+              <hr />
+              <p class="small">35元起</p>
+            </div></slot
+          >
         </ZoomImg>
         <ZoomImg
           imgSrc="http://yanxuan.nosdn.127.net/7cd0c8ed77da498090fb67c288ef05be.jpg"
           class="center"
         >
-          <div class="makerInfo" slot="otherEle">
-            <p class="large">UGG制造商</p>
-            <hr />
-            <p class="small">129元起</p>
-          </div>
+          <slot name="otherEle">
+            <div class="makerInfo">
+              <p class="large">UGG制造商</p>
+              <hr />
+              <p class="small">129元起</p>
+            </div>
+          </slot>
         </ZoomImg>
         <div class="right">
           <ZoomImg imgSrc="http://yanxuan.nosdn.127.net/d824afe357e61fbee097412c5894c6ce.jpg">
-            <div class="makerInfo" slot="otherEle">
-              <p class="large">新秀丽制造商</p>
-              <hr />
-              <p class="small">49元起</p>
-            </div>
+            <slot name="otherEle">
+              <div class="makerInfo">
+                <p class="large">新秀丽制造商</p>
+                <hr />
+                <p class="small">49元起</p>
+              </div>
+            </slot>
           </ZoomImg>
           <ZoomImg imgSrc="http://yanxuan.nosdn.127.net/cf5f4a0d110ca17b9e0a80e6f7e6184b.jpg">
-            <div class="makerInfo" slot="otherEle">
-              <p class="large">MUJI制造商</p>
-              <hr />
-              <p class="small">12.9元起</p>
-            </div>
+            <slot name="otherEle">
+              <div class="makerInfo">
+                <p class="large">MUJI制造商</p>
+                <hr />
+                <p class="small">12.9元起</p>
+              </div></slot
+            >
           </ZoomImg>
         </div>
       </div>
     </section>
-    <section class="typeSection section" v-for="(item, index) in typeList.slice(1)" :key="item.id">
+    <section class="typeSection section" v-for="items in typeList.slice(1)" :key="items.id">
       <SectionHeader
-        :title="item.name"
+        :title="items.name"
         tips=""
         moreText="查看更多>"
-        @click.native="selectType(item.id)"
+        @click="selectType(items.id)"
       />
       <ul class="content">
         <GoodsItem
-          v-for="(item, index) in filterGoodsByType(item.id).slice(0, 4)"
+          v-for="(item, index) in filterGoodsByType(items.id).slice(0, 4)"
           :style="{ marginRight: (index + 1) % 4 === 0 ? '0px' : '25px' }"
           :key="+item.id"
           :id="item.id"
@@ -158,123 +173,101 @@
 </template>
 
 <script lang="ts" setup>
-import { getTypes, getGoodsList } from '../../api/client'
-import SectionHeader from '../../components/SectionHeader'
-import ZoomImg from '../../components/ZoomImg'
-import GoodsItem from '../../components/GoodsItem'
-import Slick from '../../components/Slick'
-import FadeSwiper from '../../components/FadeSwiper'
+import { getGoodsList, getTypes } from '@/api/client'
+import { getClientSize, getScrollWidth } from '@/libs/utils'
+import SectionHeader from '@/components/section-header/index.vue'
+import ZoomImg from '@/components/zoom-img/index.vue'
+import GoodsItem from '@/components/goods-item/index.vue'
+import Slick from '@/components/slick-page/index.vue'
+import FadeSwiper from '@/components/fade-swiper/index.vue'
 
-import { getClientSize, getScrollWidth } from '../../util/util'
-
-export default {
-  name: 'MallIndex',
-  components: {
-    SectionHeader,
-    ZoomImg,
-    GoodsItem,
-    Slick,
-    FadeSwiper
-  },
-  computed: {
-    clientWidth() {
-      return getClientSize().width - getScrollWidth() + 'px'
-    }
-  },
-  data() {
-    return {
-      typeList: [],
-      goodsList: [],
-      initTimestamp: 0,
-      newTimestamp: 0,
-      timer: null,
-      h: 0,
-      m: 0,
-      s: 0
-    }
-  },
-
-  methods: {
-    filterGoodsByType(typeid) {
-      return this.goodsList.filter((item) => {
-        return item.typeId === typeid
-      })
-    },
-    navTo(route) {
-      this.$router.push(route)
-    },
-    selectType(typeId) {
-      if (typeId == -1) {
-        return
-      }
-      this.navTo('/mall/show/goodsList/' + typeId + '/all')
-    },
-    getGoodsList(typeId) {
-      const res = getGoodsList(typeId)
-      res
-        .then((data) => {
-          this.goodsList = data
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-    searchTip(tip) {
-      alert(tip)
-    },
-    inputTextChange(text) {},
-    scrollHandle() {
-      const top = this.$refs.typeList.getBoundingClientRect().top
-      //还未到顶
-      if (top > 0) {
-        this.navShouldFixed = false
-      }
-      //已经到顶
-      else {
-        this.navShouldFixed = true
-      }
-    }
-  },
-
-  mounted() {
-    //获取数据
-    const res = getTypes()
-    res
-      .then((data) => {
-        data.unshift({
-          id: -1,
-          name: '首页'
-        })
-        this.typeList = data
-        this.getGoodsList(-1)
-      })
-      .catch((e) => {
-        alert(e)
-      })
-
-    //记录打开网页再加四小时的时间
-    this.initTimestamp = new Date().getTime() + 4 * 60 * 60 * 1000
-    this.timer = setInterval(() => {
-      this.newTimestamp = new Date().getTime()
-      let diff = parseInt((this.initTimestamp - this.newTimestamp) / 1000)
-      diff = ((diff % (86400 * 365)) % (86400 * 30)) % 86400
-      this.h = new String(Math.floor(diff / 3600)).padStart(2, '0')
-      diff = diff % 3600
-      this.m = new String(Math.floor(diff / 60)).padStart(2, '0')
-      diff = diff % 60
-      this.s = new String(diff).padStart(2, '0')
-    }, 1000)
-  },
-
-  beforeDestroy() {
-    clearInterval(this.timer)
-    this.timer = null
+const typeList = ref<any>([])
+const goodsList = ref<any>([
+  {
+    id: '',
+    img: '',
+    name: '',
+    prive: ''
   }
+])
+const initTimestamp = ref<any>(0)
+const newTimestamp = ref<any>(0)
+const timer = ref<any>(null)
+const h = ref('0')
+const m = ref('0')
+const s = ref('0')
+const router = useRouter()
+
+const clientWidth = computed(() => {
+  return getClientSize().width - getScrollWidth() + 'px'
+})
+
+const filterGoodsByType = (typeid: any) => {
+  return goodsList.value.filter((item: any) => {
+    return item.typeId === typeid
+  })
 }
+const navTo = (path: string) => {
+  router.push({ path })
+}
+
+const selectType = (typeId: number) => {
+  if (typeId == -1) {
+    return
+  }
+  navTo('/mall/show/goodsList/' + typeId + '/all')
+}
+
+const getGoodsPage = (typeId: any) => {
+  console.log(typeId)
+
+  // const res = getGoodsList(typeId)
+  // res
+  //   .then((data) => {
+  //     goodsList.value = data
+  //   })
+  //   .catch((e: any) => {
+  //     alert(e)
+  //   })
+}
+onMounted(() => {
+  //获取数据
+  // const res = getTypes()
+  // res
+  //   .then((data: any) => {
+  //     data.unshift({
+  //       id: -1,
+  //       name: '首页'
+  //     })
+  //     typeList.value = data
+  //     getGoodsPage(-1)
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+
+  // //记录打开网页再加四小时的时间
+  // initTimestamp.value = new Date().getTime() + 4 * 60 * 60 * 1000
+  // timer.value = setInterval(() => {
+  //   newTimestamp.value = new Date().getTime()
+  //   let diff = (initTimestamp.value - newTimestamp.value) / 1000
+  //   diff = ((diff % (86400 * 365)) % (86400 * 30)) % 86400
+  //   h.value = new String(Math.floor(diff / 3600)).padStart(2, '0')
+  //   diff = diff % 3600
+  //   m.value = new String(Math.floor(diff / 60)).padStart(2, '0')
+  //   diff = diff % 60
+  //   s.value = new String(diff).padStart(2, '0')
+  // }, 1000)
+})
+
+onDeactivated(() => {
+  clearInterval(timer.value)
+  timer.value = null
+})
 </script>
 
 <style scoped lang="less">
-@import '../../assets/css/var.less';
+@import '../../../assets/css/var.less';
 .MallIndex {
   width: 100%;
   .swiperBox {

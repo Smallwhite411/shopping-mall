@@ -78,7 +78,7 @@ onDeactivated(() => {
 </script>
 
 <style scoped lang="less">
-@import '../assets/css/var.less';
+@import '../../assets/css/var.less';
 .FadeSwiper {
   position: relative;
   overflow: hidden;
