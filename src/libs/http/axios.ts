@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import QS from 'qs'
 import router from '@/router/index'
+import { useUserStore } from '@/stores/modules/user'
 import { errorCode } from '../enum/request'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
