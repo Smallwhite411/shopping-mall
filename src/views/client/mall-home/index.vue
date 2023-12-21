@@ -103,65 +103,63 @@
 </template>
 
 <script lang="ts" setup>
-import { mapState, mapMutations } from 'vuex'
-import NoticeList from '../../components/NoticeList'
-import { getClientSize, backToTop } from '../../util/util'
-
-const notices = reactive<Array<string>>(['今日疯抢：牛皮防水男靴仅229元！直减2...', '【福利】领1000元APP新人礼'])
+import NoticeList from '@/components/notice-list/index.vue'
+import { getClientSize, backToTop } from '@/libs/utils'
+const router = useRouter()
+const notices = reactive<Array<string>>([
+  '今日疯抢：牛皮防水男靴仅229元！直减2...',
+  '【福利】领1000元APP新人礼'
+])
 const shouldShowBT = ref<boolean>(false)
-const notices = reactive<Array<string>>(['今日疯抢：牛皮防水男靴仅229元！直减2...', '【福利】领1000元APP新人礼'])
+const clientHeight = ref(getClientSize().height)
+const clientName = ref('')
+const navTo = (route: string) => {
+  router.push({ path: route })
+}
+const logout = () => {
+  // clientLogout()
+  router.go(0)
+}
+const backToTopFn = () => {
+  backToTop()
+}
 
-export default {
-  name: 'Mall',
-  computed: {
-    ...mapState(['clientToken', 'clientName'])
-  },
-  components: {
-    NoticeList
-  },
-  data() {
-    return {
-      notices: ['今日疯抢：牛皮防水男靴仅229元！直减2...', '【福利】领1000元APP新人礼'],
-      clientHeight: getClientSize().height,
-    }
-  },
-
-  methods: {
-    ...mapMutations({
-      clientLogout: 'CLIENT_LOGOUT'
-    }),
-    navTo(route) {
-      this.$router.push(route)
-    },
-    logout() {
-      this.clientLogout()
-      this.$router.go(0)
-    },
-    backToTop() {
-      backToTop()
-    },
-    watchScrollTop() {
-      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-      if (scrollTop > 150) {
-        this.shouldShowBT = true
-      } else {
-        this.shouldShowBT = false
-      }
-    }
-  },
-
-  mounted() {
-    document.addEventListener('scroll', this.watchScrollTop, false)
-  },
-
-  beforeDestroyed() {
-    document.removeEventListener('scroll', this.watchScrollTop, false)
+const watchScrollTop = () => {
+  let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+  if (scrollTop > 150) {
+    shouldShowBT.value = true
+  } else {
+    shouldShowBT.value = false
   }
 }
+
+const clientToken = ()=>{
+
+}
+
+onMounted(() => {
+  document.addEventListener('scroll', watchScrollTop, false)
+})
+
+onDeactivated(() => {
+  document.removeEventListener('scroll', watchScrollTop, false)
+})
+
+// export default {
+//   name: 'Mall',
+//   computed: {
+//     ...mapState(['clientToken', 'clientName'])
+//   },
+
+//   methods: {
+//     ...mapMutations({
+//       clientLogout: 'CLIENT_LOGOUT'
+//     })
+//   },
 </script>
 
 <style scoped lang="less">
-@import '../../assets/css/var.less';
+@import '../../../assets/css/var.less';
 .Mall {
   width: 100%;
   header {

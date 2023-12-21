@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import MallIndex from '@/views/client/mall-index/index.vue'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <MallIndex />
-
-  <!-- <RouterView /> -->
+  <RouterView />
 </template>
 
 <style scoped>

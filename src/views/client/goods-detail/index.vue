@@ -15,7 +15,7 @@
           </div>
           <div class="infoBox">
             <span>规格：</span>
-            <Radio
+            <RadioPage
               v-for="(item, index) in specs"
               :key="item.id"
               v-model="temSpecId"
@@ -26,7 +26,7 @@
               <span class="tips" slot="tips">{{
                 item.specName + ' 还剩' + item.stockNum + '件'
               }}</span>
-            </Radio>
+            </RadioPage>
           </div>
           <div class="infoBox">
             <span>数量：</span>
@@ -130,8 +130,7 @@
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex'
+<script lang="ts" setup>
 import {
   getGoodsInfo,
   getGoodsMsg,
@@ -139,98 +138,97 @@ import {
   addOrder,
   getComment,
   getGoodsList
-} from '../../api/client'
-import NumberInput from '../../components/NumberInput'
-import Radio from '../../components/Radio'
-import GoodsItem from '../../components/GoodsItem'
+} from '@/api/client'
+import GoodsItem from '@/components/goods-item/index.vue'
+import RadioPage from '@/components/radio-page/index.vue'
+import NumberInput from '@/components/number-input/index.vue'
+const router = useRoute()
+const goodsImg = ref<any>('')
+const goodsName = ref<any>('')
+const goodsDesc = ref<any>('')
+const specs = ref<any>([])
+const typeId = ref<any>('')
+const temSpecId = ref<any>(0)
+const num = ref<any>(1)
+const msgList = ref<any>([])
+const askContent = ref<any>('')
+const tagList = ref<any>(['评价', '商品问答'])
+const curIndex = ref<any>(0)
+const rate = ref<any>('')
+const commentList = ref<any>([])
+const goodsList = ref<any>([])
+
+const goodsPrice = () => {
+  let unitPrice = 0
+  specs.value.map((item: any) => {
+    if (item.id === temSpecId.value) {
+      unitPrice = Number(item.unitPrice)
+    }
+  })
+  return num.value * unitPrice
+}
+
+const id = computed(() => {
+  return router.params.id
+})
+
+const temStockNum = computed(() => {
+  let stockNum = 0
+  specs.value.map((item: any) => {
+    if (item.id === temSpecId.value) {
+      stockNum = Number(item.stockNum)
+    }
+  })
+  return stockNum
+})
+
+const filterList = computed(() => {
+  return goodsList.value.filter((item: any) => {
+    return String(item.id) !== String(id.value)
+  })
+})
+
+const changeIndex=(i:number) =>{
+      curIndex.value = i
+    },
+
+    const getGoodsInfo=(id:string) =>{
+      // const res = getGoodsInfo(id)
+      // res
+      //   .then((data) => {
+      //     goodsImg.value = data.img
+      //     goodsName.value = data.name
+      //     goodsDesc.value = data.desc
+      //     specs.value = data.specs
+      //     typeId.value = data.typeId
+      //     temSpecId.value = data.specs[0].id
+      //     getTypeGoodsList(data.typeId)
+      //   })
+      //   .catch((e) => {
+      //     alert(e)
+      //   })
+    },
+
+    const getGoodsMsg=(id) =>{
+      const res = getGoodsMsg(id)
+      res
+        .then((data) => {
+          msgList.value = data
+        })
+        .catch((e) => {
+          alert(e)
+        })
+    },
 
 export default {
-  name: 'GoodsDetail',
-  components: {
-    NumberInput,
-    Radio,
-    GoodsItem
-  },
   computed: {
     ...mapState(['clientToken', 'clientName']),
     id() {
       return this.$route.params.id
-    },
-    goodsPrice() {
-      let unitPrice = 0
-      this.specs.map((item, index) => {
-        if (item.id === this.temSpecId) {
-          unitPrice = Number(item.unitPrice)
-        }
-      })
-      return this.num * unitPrice
-    },
-    temStockNum() {
-      let stockNum = 0
-      this.specs.map((item, index) => {
-        if (item.id === this.temSpecId) {
-          stockNum = Number(item.stockNum)
-        }
-      })
-      return stockNum
-    },
-    filterList() {
-      return this.goodsList.filter((item) => {
-        return String(item.id) !== String(this.id)
-      })
     }
-  },
-  data() {
-    return {
-      goodsImg: '',
-      goodsName: '',
-      goodsDesc: '',
-      specs: [],
-      typeId: '',
-      temSpecId: 0,
-      num: 1,
-      msgList: [],
-      askContent: '',
-      tagList: ['评价', '商品问答'],
-      curIndex: 0,
-      rate: '',
-      commentList: [],
-      goodsList: []
-    }
-  },
 
-  methods: {
-    changeIndex(i) {
-      this.curIndex = i
-    },
 
-    getGoodsInfo(id) {
-      const res = getGoodsInfo(id)
-      res
-        .then((data) => {
-          this.goodsImg = data.img
-          this.goodsName = data.name
-          this.goodsDesc = data.desc
-          this.specs = data.specs
-          this.typeId = data.typeId
-          this.temSpecId = data.specs[0].id
-          this.getTypeGoodsList(data.typeId)
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
 
-    getGoodsMsg(id) {
-      const res = getGoodsMsg(id)
-      res
-        .then((data) => {
-          this.msgList = data
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
 
     postAsk() {
       if (this.askContent.trim().length <= 0) {
