@@ -51,7 +51,7 @@
       </ul>
     </div>
     <Popup title="商品评价" @popupClose="closePopup" v-show="popupShow">
-      <slot name="popupContent">
+      <template #popupContent>
         <div class="popupContent">
           <div class="scoreBox">
             <span class="tips">评分：</span>
@@ -68,7 +68,7 @@
           <textarea v-model="comment" cols="30" rows="10" placeholder="请输入评论内容"></textarea>
           <button @click="sendComment">发表</button>
         </div>
-      </slot>
+      </template>
     </Popup>
   </div>
 </template>

@@ -32,14 +32,14 @@
     </ul>
     <button @click="updateUserData" class="saveBtn">保存</button>
     <Popup title="修改密码" @popupClose="closePopup" v-show="popupShow">
-      <slot name="popupContent">
+      <template #popupContent>
         <div class="popupContent">
           <input type="password" v-model="oldPwd" placeholder="请输入原密码" />
           <input type="password" v-model="newPwd" placeholder="请输入新密码" />
           <input type="password" v-model="confirmPwd" placeholder="请再次输入新密码" />
           <button @click="updatePwd">确认修改</button>
         </div>
-      </slot>
+      </template>
     </Popup>
   </div>
 </template>

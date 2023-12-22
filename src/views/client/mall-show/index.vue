@@ -1,9 +1,9 @@
 <template>
   <div class="MallShow">
     <FixedNav v-show="navShouldFixed">
-      <slot name="navContent">
+      <template #navContent>
         <div class="container fixedNavContainer">
-          <h3 class="fixedLeft" @click="navTo('/mall/show/index')">MoreMall</h3>
+          <h3 class="fixedLeft" @click="navTo('/mall-index/show/index')">MoreMall</h3>
           <ul class="fixedRight">
             <li
               v-for="item in typeList"
@@ -14,8 +14,8 @@
               {{ item.name }}
             </li>
           </ul>
-        </div></slot
-      >
+        </div>
+      </template>
     </FixedNav>
     <div class="logo">
       <img src="../../../assets/img/index1.gif" />
@@ -82,9 +82,9 @@ const judgeCurPath = (typeId: number) => {
 const selectType = (typeId: number) => {
   //首页
   if (typeId === -1) {
-    navTo('/mall/show/index')
+    navTo('/mall-index/show/index')
   } else {
-    navTo('/mall/show/goodsList/' + typeId + '/all')
+    navTo('/mall-index/show/goodsList/' + typeId + '/all')
   }
 }
 const searchTip = (tip: string) => {
@@ -98,7 +98,7 @@ const searchConfirm = () => {
     alert('输入不能为空！')
     return
   }
-  navTo(`/mall/show/goodsList/0/${searchText.value}`)
+  navTo(`/mall-index/show/goodsList/0/${searchText.value}`)
 }
 const scrollHandle = () => {
   const top = typeListRef.value.getBoundingClientRect().top

@@ -1,15 +1,9 @@
 <template>
   <div class="MallIndex">
     <FadeSwiper class="swiperBox" :width="clientWidth" height="420px">
-      <slot name="item1">
-        <img class="banner" src="../../../assets/img/banner1.jpg" />
-      </slot>
-      <slot name="item2">
-        <img class="banner" src="../../../assets/img/banner2.jpg" />
-      </slot>
-      <slot name="item3">
-        <img class="banner" src="../../../assets/img/banner3.jpg" />
-      </slot>
+      <template #item1> <img class="banner" src="../../../assets/img/banner1.jpg" /> </template>
+      <template #item2> <img class="banner" src="../../../assets/img/banner2.jpg" /></template>
+      <template #item3> <img class="banner" src="../../../assets/img/banner3.jpg" /></template>
     </FadeSwiper>
     <section class="newGoods section">
       <SectionHeader title="新品首发" tips="周一周四上新，为你寻觅世间好物" moreText="更多新品>" />
@@ -18,7 +12,7 @@
         :showWidth="266 * 4 + 10 * 3"
         :height="360"
       >
-        <slot name="list">
+        <template #list>
           <ul
             class="goodsList"
             :style="{ width: `${266 * goodsList.length + 10 * (goodsList.length - 1)}px` }"
@@ -33,7 +27,7 @@
               :price="item.price"
             />
           </ul>
-        </slot>
+        </template>
       </Slick>
     </section>
     <section class="flashSale section">
@@ -108,43 +102,43 @@
           imgSrc="http://yanxuan.nosdn.127.net/0266209ded1751f599fe0dc21bb33e02.jpg"
           class="left"
         >
-          <slot name="otherEle">
+          <template #otherEle>
             <div class="makerInfo">
               <p class="large">Adidas制造商</p>
               <hr />
               <p class="small">35元起</p>
-            </div></slot
+            </div></template
           >
         </ZoomImg>
         <ZoomImg
           imgSrc="http://yanxuan.nosdn.127.net/7cd0c8ed77da498090fb67c288ef05be.jpg"
           class="center"
         >
-          <slot name="otherEle">
+          <template #otherEle>
             <div class="makerInfo">
               <p class="large">UGG制造商</p>
               <hr />
               <p class="small">129元起</p>
             </div>
-          </slot>
+          </template>
         </ZoomImg>
         <div class="right">
           <ZoomImg imgSrc="http://yanxuan.nosdn.127.net/d824afe357e61fbee097412c5894c6ce.jpg">
-            <slot name="otherEle">
+            <template #otherEle>
               <div class="makerInfo">
                 <p class="large">新秀丽制造商</p>
                 <hr />
                 <p class="small">49元起</p>
-              </div>
-            </slot>
+              </div></template
+            >
           </ZoomImg>
           <ZoomImg imgSrc="http://yanxuan.nosdn.127.net/cf5f4a0d110ca17b9e0a80e6f7e6184b.jpg">
-            <slot name="otherEle">
+            <template #otherEle>
               <div class="makerInfo">
                 <p class="large">MUJI制造商</p>
                 <hr />
                 <p class="small">12.9元起</p>
-              </div></slot
+              </div></template
             >
           </ZoomImg>
         </div>
@@ -184,10 +178,10 @@ import FadeSwiper from '@/components/fade-swiper/index.vue'
 const typeList = ref<any>([])
 const goodsList = ref<any>([
   {
-    id: '',
-    img: '',
-    name: '',
-    prive: ''
+    id: 1,
+    name: '大衣',
+    price: 100,
+    img: 'https://cbu01.alicdn.com/img/ibank/2019/278/615/12078516872_1032655337.jpg'
   }
 ])
 const initTimestamp = ref<any>(0)
@@ -245,7 +239,6 @@ onMounted(() => {
   //   .catch((e) => {
   //     alert(e)
   //   })
-
   // //记录打开网页再加四小时的时间
   // initTimestamp.value = new Date().getTime() + 4 * 60 * 60 * 1000
   // timer.value = setInterval(() => {

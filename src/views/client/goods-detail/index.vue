@@ -23,9 +23,9 @@
               radioName="spec"
               :radioVal="item.id"
             >
-              <slot name="tips">
+              <template #tips>
                 <span class="tips">{{ item.specName + ' 还剩' + item.stockNum + '件' }}</span>
-              </slot>
+              </template>
             </RadioPage>
           </div>
           <div class="infoBox">

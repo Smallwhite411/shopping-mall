@@ -29,7 +29,24 @@
 import { getGoodsList, searchGoods } from '@/api/client'
 import GoodsItem from '@/components/goods-item/index.vue'
 const route = useRoute()
-const goodsList = ref<any>([])
+const goodsList = ref<any>([{
+  id: 1,
+  name: '大衣',
+  price: 100,
+  img: 'https://cbu01.alicdn.com/img/ibank/2019/278/615/12078516872_1032655337.jpg'
+},
+{
+  id: 2,
+  name: '大衣',
+  price: 100,
+  img: 'https://cbu01.alicdn.com/img/ibank/2019/278/615/12078516872_1032655337.jpg'
+},
+{
+  id: 3,
+  name: '大衣',
+  price: 100,
+  img: 'https://cbu01.alicdn.com/img/ibank/2019/278/615/12078516872_1032655337.jpg'
+}])
 const sortMode = ref(0)
 const isSearchPage = computed(() => {
   return Number(typeId.value) === 0 ? true : false
