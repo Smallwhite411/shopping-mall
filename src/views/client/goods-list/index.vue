@@ -31,19 +31,19 @@ import GoodsItem from '@/components/goods-item/index.vue'
 const route = useRoute()
 const goodsList = ref<any>([{
   id: 1,
-  name: '大衣',
+  name: '大衣3',
   price: 100,
   img: 'https://cbu01.alicdn.com/img/ibank/2019/278/615/12078516872_1032655337.jpg'
 },
 {
   id: 2,
-  name: '大衣',
+  name: '大衣4',
   price: 100,
   img: 'https://cbu01.alicdn.com/img/ibank/2019/278/615/12078516872_1032655337.jpg'
 },
 {
   id: 3,
-  name: '大衣',
+  name: '大衣5',
   price: 100,
   img: 'https://cbu01.alicdn.com/img/ibank/2019/278/615/12078516872_1032655337.jpg'
 }])

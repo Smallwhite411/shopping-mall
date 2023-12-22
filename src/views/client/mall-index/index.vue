@@ -179,9 +179,45 @@ const typeList = ref<any>([])
 const goodsList = ref<any>([
   {
     id: 1,
-    name: '大衣',
+    name: '大衣1',
     price: 100,
     img: 'https://cbu01.alicdn.com/img/ibank/2019/278/615/12078516872_1032655337.jpg'
+  },
+  {
+    id: 2,
+    name: '大裤2',
+    price: 100,
+    img: 'https://cbu01.alicdn.com/img/ibank/2020/580/410/19643014085_1351979124.jpg'
+  },
+  {
+    id: 3,
+    name: '大裤3',
+    price: 100,
+    img: 'https://cbu01.alicdn.com/img/ibank/2020/580/410/19643014085_1351979124.jpg'
+  },
+  {
+    id: 4,
+    name: '大裤4',
+    price: 100,
+    img: 'https://cbu01.alicdn.com/img/ibank/2020/580/410/19643014085_1351979124.jpg'
+  },
+  {
+    id: 5,
+    name: '大裤5',
+    price: 100,
+    img: 'https://cbu01.alicdn.com/img/ibank/2020/580/410/19643014085_1351979124.jpg'
+  },
+  {
+    id: 6,
+    name: '大裤6',
+    price: 100,
+    img: 'https://cbu01.alicdn.com/img/ibank/2020/580/410/19643014085_1351979124.jpg'
+  },
+  {
+    id: 7,
+    name: '大裤7',
+    price: 100,
+    img: 'https://cbu01.alicdn.com/img/ibank/2020/580/410/19643014085_1351979124.jpg'
   }
 ])
 const initTimestamp = ref<any>(0)

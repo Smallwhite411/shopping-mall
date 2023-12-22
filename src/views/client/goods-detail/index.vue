@@ -156,7 +156,14 @@ const tagList = ref<any>(['评价', '商品问答'])
 const curIndex = ref<any>(0)
 const rate = ref<any>('')
 const commentList = ref<any>([])
-const goodsList = ref<any>([])
+const goodsList = ref<any>([
+  {
+    id: 1,
+    name: '大衣33',
+    price: 300,
+    img: 'https://cbu01.alicdn.com/img/ibank/2019/278/615/12078516872_1032655337.jpg'
+  }
+])
 
 const goodsPrice = computed(() => {
   let unitPrice = 0
