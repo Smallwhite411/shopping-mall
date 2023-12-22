@@ -25,99 +25,86 @@
   </div>
 </template>
 
-<script>
-import { getGoodsList, searchGoods } from '../../api/client'
-import GoodsItem from '../../components/GoodsItem'
+<script lang="ts" setup>
+import { getGoodsList, searchGoods } from '@/api/client'
+import GoodsItem from '@/components/goods-item/index.vue'
+const route = useRoute()
+const goodsList = ref<any>([])
+const sortMode = ref(0)
+const isSearchPage = computed(() => {
+  return Number(typeId.value) === 0 ? true : false
+})
+const typeId = computed(() => {
+  return route.params.typeId || 0
+})
+const keyword = computed(() => {
+  return route.params.keyword || ''
+})
+const sortedList = computed(() => {
+  let temList = goodsList.value.slice()
+  if (sortMode.value === 0) {
+    return temList
+  } else if (sortMode.value === 1) {
+    return temList.sort((a: { price: number }, b: { price: number }) => {
+      return a.price - b.price
+    })
+  } else if (sortMode.value === 2) {
+    return temList.sort((a: { price: number }, b: { price: number }) => {
+      return b.price - a.price
+    })
+  }
+})
 
-export default {
-  name: 'GoodsList',
-  components: {
-    GoodsItem
-  },
-  computed: {
-    isSearchPage() {
-      return Number(this.typeId) === 0 ? true : false
-    },
-    typeId() {
-      return this.$route.params.typeId || 0
-    },
-    keyword() {
-      return this.$route.params.keyword || ''
-    },
-    sortedList() {
-      let temList = this.goodsList.slice()
-      if (this.sortMode === 0) {
-        return temList
-      } else if (this.sortMode === 1) {
-        return temList.sort((a, b) => {
-          return a.price - b.price
-        })
-      } else if (this.sortMode === 2) {
-        return temList.sort((a, b) => {
-          return b.price - a.price
-        })
-      }
-    }
-  },
-  data() {
-    return {
-      goodsList: [],
-      sortMode: 0 //0默认，1价格升序，2价格降序
-    }
-  },
-
-  methods: {
-    getGoodsList(typeId) {
-      const res = getGoodsList(typeId)
-      res
-        .then((data) => {
-          this.goodsList = data
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-    searchGoods(keyword) {
-      const res = searchGoods(keyword)
-      res
-        .then((data) => {
-          this.goodsList = data
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-    changeSortMode(mode) {
-      if (mode === 3) {
-        this.sortMode = this.sortMode === 1 ? 2 : 1
-      } else {
-        this.sortMode = 0
-      }
-    }
-  },
-
-  mounted() {
-    //类别页
-    if (!this.isSearchPage) {
-      this.getGoodsList(this.typeId)
-    }
-    //搜索结果页
-    else {
-      this.searchGoods(this.keyword)
-    }
-  },
-
-  watch: {
-    $route(to, from) {
-      this.sortMode = 0
-      if (!this.isSearchPage) {
-        this.getGoodsList(this.typeId)
-      } else {
-        this.searchGoods(to.params.keyword)
-      }
-    }
+const getGoodsListFnc = (typeId: string) => {
+  const res = getGoodsList(typeId)
+  res
+    .then((data) => {
+      goodsList.value = data
+    })
+    .catch((e) => {
+      alert(e)
+    })
+}
+const searchGoodsFnc = (keyword: string) => {
+  const res = searchGoods(keyword)
+  res
+    .then((data) => {
+      goodsList.value = data
+    })
+    .catch((e) => {
+      alert(e)
+    })
+}
+const changeSortMode = (mode: number) => {
+  if (mode === 3) {
+    sortMode.value = sortMode.value === 1 ? 2 : 1
+  } else {
+    sortMode.value = 0
   }
 }
+
+watch(
+  () => route,
+  (to) => {
+    sortMode.value = 0
+    if (!isSearchPage.value) {
+      getGoodsList(typeId)
+    } else {
+      searchGoods(to.params.keyword)
+    }
+  }
+)
+
+onMounted(() => {
+  //类别页
+  if (!isSearchPage.value) {
+    getGoodsList(typeId.value)
+  }
+  //搜索结果页
+  else {
+    searchGoods(keyword.value)
+  }
+})
 </script>
 
 <style scoped lang="less">

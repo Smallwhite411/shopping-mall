@@ -27,9 +27,21 @@
 </template>
 
 <script lang="ts" setup>
-import { mapState } from 'vuex'
+const router = useRouter()
+const route = useRoute()
+const navTo = (route: string) => {
+  router.push(route)
+}
 
-const navTo = () => {}
+watch(
+  () => route,
+  (to) => {
+    curPath.value = to.path
+  }
+)
+const curPath = ref(route.path)
+
+// ...mapState(['clientToken', 'clientName'])
 </script>
 
 <style scoped lang="less">

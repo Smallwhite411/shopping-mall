@@ -9,7 +9,7 @@
         <span>交易操作</span>
       </div>
       <ul class="orderList">
-        <li v-for="(item, index) in orderList" :key="'order' + item.id">
+        <li v-for="item in orderList" :key="'order' + item.id">
           <div class="orderDetail">
             <img :src="item.goods.img" alt="商品图片" />
             <div class="goodsName">
@@ -43,12 +43,12 @@
 </template>
 
 <script setup lang="ts">
-import { mapState } from 'vuex'
-import { getOrderByState, deleteOrder, settleAccounts } from '../../api/client'
-import NumberInput from '../../components/NumberInput'
+import { getOrderByState, deleteOrder, settleAccounts } from '@/api/client'
+import NumberInput from '@/components/number-input/index.vue'
 
 const orderList = ref<Array<any>>([])
-
+const clientToken = ref('')
+const router = useRouter()
 const totalAmount = computed(() => {
   let amount = 0
 
@@ -58,87 +58,85 @@ const totalAmount = computed(() => {
   return amount
 })
 
-export default {
-  name: 'Cart',
-  components: {
-    NumberInput
-  },
-  computed: {
-    ...mapState(['clientToken'])
-  },
-  data() {
-    return {
-      orderList: []
+const getOrderByStateFnc = (state: any) => {
+  // const res = getOrderByState(state, clientToken.value)
+  // res
+  //   .then((data) => {
+  //     orderList.value = data
+  //     orderList.value.map((item, index) => {
+  //       item.temGoodsNum = item.goodsNum
+  //     })
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+const numberChange = (orderId: any) => {
+  orderList.value.map((item) => {
+    if (orderId === item.id) {
+      item.amount = item.temGoodsNum * item.goods.unitPrice
+      console.log(item.temGoodsNum, item.goods.unitPrice)
     }
-  },
-
-  methods: {
-    getOrderByState(state) {
-      const res = getOrderByState(state, this.clientToken)
-      res
-        .then((data) => {
-          this.orderList = data
-          this.orderList.map((item, index) => {
-            item.temGoodsNum = item.goodsNum
-          })
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-    numberChange(orderId) {
-      this.orderList.map((item, index) => {
-        if (orderId === item.id) {
-          item.amount = item.temGoodsNum * item.goods.unitPrice
-          console.log(item.temGoodsNum, item.goods.unitPrice)
+  })
+}
+const deleteOrderFnc = (orderId: any) => {
+  const res = deleteOrder(orderId)
+  res
+    .then(() => {
+      alert('删除订单成功！')
+      orderList.value.map((item, index) => {
+        if (item.id === orderId) {
+          orderList.value.splice(index, 1)
         }
       })
-    },
-    deleteOrder(orderId) {
-      const res = deleteOrder(orderId)
-      res
-        .then(() => {
-          alert('删除订单成功！')
-          this.orderList.map((item, index) => {
-            if (item.id === orderId) {
-              this.orderList.splice(index, 1)
-            }
-          })
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-    navTo(route) {
-      this.$router.push(route)
-    },
-    settleAccounts() {
-      let cartList = []
-      this.orderList.map((item, index) => {
-        cartList.push({
-          id: item.id,
-          goodsNum: item.temGoodsNum,
-          amount: item.amount
-        })
-      })
-      const res = settleAccounts({
-        cartList: cartList
-      })
-      res
-        .then(() => {
-          alert('下单成功！')
-          this.orderList = []
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    }
-  },
-
-  mounted() {
-    this.getOrderByState(0)
-  }
+    })
+    .catch((e: any) => {
+      alert(e)
+    })
 }
+const navTo = (route: string) => {
+  router.push(route)
+}
+const settleAccountsFnc = () => {
+  let cartList: any = []
+  orderList.value.map((item) => {
+    cartList.push({
+      id: item.id,
+      goodsNum: item.temGoodsNum,
+      amount: item.amount
+    })
+  })
+  const res = settleAccounts({
+    cartList: cartList
+  })
+  res
+    .then(() => {
+      alert('下单成功！')
+      orderList.value = []
+    })
+    .catch((e) => {
+      alert(e)
+    })
+}
+
+onMounted(() => {
+  getOrderByState(0)
+})
+
+// export default {
+//   name: 'Cart',
+//   components: {
+//     NumberInput
+//   },
+//   computed: {
+//     ...mapState(['clientToken'])
+//   },
+//   methods: {},
+
+//   mounted() {
+//     this.
+//   }
+// }
 </script>
 
 <style scoped lang="less">

@@ -16,16 +16,16 @@
           <div class="infoBox">
             <span>规格：</span>
             <RadioPage
-              v-for="(item, index) in specs"
+              v-for="item in specs"
               :key="item.id"
               v-model="temSpecId"
               :initVal="specs[0].id"
               radioName="spec"
               :radioVal="item.id"
             >
-              <span class="tips" slot="tips">{{
-                item.specName + ' 还剩' + item.stockNum + '件'
-              }}</span>
+              <slot name="tips">
+                <span class="tips">{{ item.specName + ' 还剩' + item.stockNum + '件' }}</span>
+              </slot>
             </RadioPage>
           </div>
           <div class="infoBox">
@@ -94,7 +94,7 @@
             <div v-else class="banAsk">请先登录</div>
           </div>
           <ul class="msgList">
-            <li v-for="(item, index) in msgList" :key="'msg' + item.id">
+            <li v-for="item in msgList" :key="'msg' + item.id">
               <div class="ask">
                 <span class="note">问</span>
                 <span class="text">{{ item.content }}</span>
@@ -117,7 +117,7 @@
         <div class="title">相似商品</div>
         <ul class="list">
           <GoodsItem
-            v-for="(item, index) in filterList"
+            v-for="item in filterList"
             :key="+item.id"
             :id="item.id"
             :img="item.img"
@@ -142,7 +142,7 @@ import {
 import GoodsItem from '@/components/goods-item/index.vue'
 import RadioPage from '@/components/radio-page/index.vue'
 import NumberInput from '@/components/number-input/index.vue'
-const router = useRoute()
+const route = useRoute()
 const goodsImg = ref<any>('')
 const goodsName = ref<any>('')
 const goodsDesc = ref<any>('')
@@ -158,7 +158,7 @@ const rate = ref<any>('')
 const commentList = ref<any>([])
 const goodsList = ref<any>([])
 
-const goodsPrice = () => {
+const goodsPrice = computed(() => {
   let unitPrice = 0
   specs.value.map((item: any) => {
     if (item.id === temSpecId.value) {
@@ -166,10 +166,10 @@ const goodsPrice = () => {
     }
   })
   return num.value * unitPrice
-}
+})
 
 const id = computed(() => {
-  return router.params.id
+  return route.params.id
 })
 
 const temStockNum = computed(() => {
@@ -188,159 +188,167 @@ const filterList = computed(() => {
   })
 })
 
-const changeIndex=(i:number) =>{
-      curIndex.value = i
-    },
-
-    const getGoodsInfo=(id:string) =>{
-      // const res = getGoodsInfo(id)
-      // res
-      //   .then((data) => {
-      //     goodsImg.value = data.img
-      //     goodsName.value = data.name
-      //     goodsDesc.value = data.desc
-      //     specs.value = data.specs
-      //     typeId.value = data.typeId
-      //     temSpecId.value = data.specs[0].id
-      //     getTypeGoodsList(data.typeId)
-      //   })
-      //   .catch((e) => {
-      //     alert(e)
-      //   })
-    },
-
-    const getGoodsMsg=(id) =>{
-      const res = getGoodsMsg(id)
-      res
-        .then((data) => {
-          msgList.value = data
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-
-export default {
-  computed: {
-    ...mapState(['clientToken', 'clientName']),
-    id() {
-      return this.$route.params.id
-    }
-
-
-
-
-    postAsk() {
-      if (this.askContent.trim().length <= 0) {
-        return
-      }
-      const res = askGoodsMsg({
-        token: this.clientToken,
-        msg: this.askContent,
-        goodsId: this.id
-      })
-      res
-        .then(() => {
-          let time = new Date()
-          this.msgList.unshift({
-            id: 'new',
-            content: this.askContent,
-            state: 0,
-            asker: this.clientName,
-            time: time.getMonth() + 1 + '-' + time.getDate(),
-            reply: {}
-          })
-          this.askContent = ''
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-
-    addToCart() {
-      if (!this.clientToken) {
-        alert('请先登录！')
-        return
-      }
-      const res = addOrder({
-        token: this.clientToken,
-        goodsDetailId: this.temSpecId,
-        state: 0,
-        num: this.num,
-        amount: this.goodsPrice
-      })
-      res
-        .then(() => {
-          alert('加入购物车成功！请前往 个人中心->购物车 结算')
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-
-    buy() {
-      if (!this.clientToken) {
-        alert('请先登录！')
-        return
-      }
-      const res = addOrder({
-        token: this.clientToken,
-        goodsDetailId: this.temSpecId,
-        num: this.num,
-        state: 1,
-        amount: this.goodsPrice
-      })
-      res
-        .then(() => {
-          alert('自动付款成功！请耐心等待包裹派送~')
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-
-    getComment(goodsId) {
-      const res = getComment(goodsId)
-      res
-        .then((data) => {
-          if (Object.keys(data).length <= 0) {
-            this.rate = ''
-            this.commentList = []
-            return
-          }
-          this.rate = data.rate
-          this.commentList = data.commentList
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-
-    getTypeGoodsList(typeId) {
-      const res = getGoodsList(typeId)
-      res
-        .then((data) => {
-          this.goodsList = data
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    }
-  },
-  mounted() {
-    this.getGoodsInfo(this.id)
-    this.getGoodsMsg(this.id)
-    this.getComment(this.id)
-  },
-
-  watch: {
-    $route(to, from) {
-      this.getGoodsInfo(to.params.id)
-      this.getGoodsMsg(to.params.id)
-      this.getComment(to.params.id)
-    }
-  }
+const changeIndex = (i: number) => {
+  curIndex.value = i
 }
+
+const getGoodsInfoFnc = (id: string | string[]) => {
+  // const res = getGoodsInfo(id)
+  // res
+  //   .then((data) => {
+  //     goodsImg.value = data.img
+  //     goodsName.value = data.name
+  //     goodsDesc.value = data.desc
+  //     specs.value = data.specs
+  //     typeId.value = data.typeId
+  //     temSpecId.value = data.specs[0].id
+  //     getTypeGoodsList(data.typeId)
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+
+const getGoodsMsgFnc = (id: string | string[]) => {
+  // const res = getGoodsMsg(id)
+  // res
+  //   .then((data) => {
+  //     msgList.value = data
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+
+const postAsk = () => {
+  // if (askContent.value.trim().length <= 0) {
+  //   return
+  // }
+  // const res = askGoodsMsg({
+  //   token: clientToken,
+  //   msg: askContent.value,
+  //   goodsId: id.value
+  // })
+  // res
+  //   .then(() => {
+  //     let time = new Date()
+  //     msgList.value.unshift({
+  //       id: 'new',
+  //       content: askContent.value,
+  //       state: 0,
+  //       asker: clientName,
+  //       time: time.getMonth() + 1 + '-' + time.getDate(),
+  //       reply: {}
+  //     })
+  //     askContent.value = ''
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+
+const addToCart = () => {
+  // if (!clientToken) {
+  //   alert('请先登录！')
+  //   return
+  // }
+  // const res = addOrder({
+  //   token: clientToken,
+  //   goodsDetailId: temSpecId.value,
+  //   state: 0,
+  //   num: num.value,
+  //   amount: goodsPrice
+  // })
+  // res
+  //   .then(() => {
+  //     alert('加入购物车成功！请前往 个人中心->购物车 结算')
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+
+const buy = () => {
+  // if (!clientToken) {
+  //   alert('请先登录！')
+  //   return
+  // }
+  // const res = addOrder({
+  //   token: clientToken,
+  //   goodsDetailId: temSpecId.value,
+  //   num: num.value,
+  //   state: 1,
+  //   amount: goodsPrice
+  // })
+  // res
+  //   .then(() => {
+  //     alert('自动付款成功！请耐心等待包裹派送~')
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+
+const getCommentFnc = (goodsId: string | string[]) => {
+  // const res = getComment(goodsId)
+  // res
+  //   .then((data) => {
+  //     if (Object.keys(data).length <= 0) {
+  //       rate.value = ''
+  //       commentList.value = []
+  //       return
+  //     }
+  //     rate.value = data.rate
+  //     commentList.value = data.commentList
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+
+const getTypeGoodsList = (typeId: string | string[]) => {
+  // const res = getGoodsList(typeId)
+  // res
+  //   .then((data) => {
+  //     goodsList.value = data
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+
+watch(
+  () => route,
+  (to) => {
+    getGoodsInfo(to.params.id)
+    getGoodsMsg(to.params.id)
+    getComment(to.params.id)
+  }
+)
+
+onMounted(() => {
+  getGoodsInfo(id.value)
+  getGoodsMsg(id.value)
+  getComment(id.value)
+})
+
+const clientToken = ref('')
+
+// export default {
+//   computed: {
+//     ...mapState(['clientToken', 'clientName']),
+//     id() {
+//       return this.$route.params.id
+//     }
+//   },
+//   mounted() {},
+
+//   watch: {
+//     $route(to, from) {
+
+//     }
+//   }
+// }
 </script>
 
 <style scoped lang="less">

@@ -24,75 +24,80 @@
   </div>
 </template>
 
-<script>
-import { mapMutations } from 'vuex'
-import { getClientSize } from '../../util/util'
-import { login, signup } from '../../api/client'
+<script lang="ts" setup>
+import { getClientSize } from '@/libs/utils'
+import { login, register } from '@/api/client'
 
-export default {
-  name: 'ClientLogin',
-  computed: {
-    width() {
-      return getClientSize().width
-    },
-    height() {
-      return getClientSize().height
-    }
-  },
-  data() {
-    return {
-      curIndex: 0
-    }
-  },
-  methods: {
-    ...mapMutations({
-      setClientName: 'SET_CLIENT_NAME',
-      setClientToken: 'SET_CLIENT_TOKEN'
-    }),
-    setIndex(index) {
-      if (index === this.curIndex) {
-        return
-      }
-      this.curIndex = index
-    },
-    login() {
-      const account = this.$refs.account.value
-      const pwd = this.$refs.pwd.value
-      const res = login({
-        account: account,
-        pwd: pwd
-      })
-      res
-        .then((data) => {
-          this.setClientName(data.name)
-          this.setClientToken(data.token)
-          this.$router.push('/')
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    },
-    signup() {
-      const res = signup({
-        email: this.$refs.signEmail.value,
-        nickname: this.$refs.signName.value,
-        pwd: this.$refs.signPwd.value,
-        recipient: this.$refs.signRecipient.value,
-        address: this.$refs.signAddress.value,
-        phone: this.$refs.signPhone.value
-      })
-      res
-        .then((data) => {
-          this.setClientName(data.name)
-          this.setClientToken(data.token)
-          this.$router.push('/')
-        })
-        .catch((e) => {
-          alert(e)
-        })
-    }
+const router = useRouter()
+const curIndex = ref(0)
+const accountRef = ref<any>(null)
+const pwdRef = ref<any>(null)
+const signEmailRef = ref<any>(null)
+const signNameRef = ref<any>(null)
+const signPwdRef = ref<any>(null)
+const signRecipientRef = ref<any>(null)
+const signAddressRef = ref<any>(null)
+const signPhoneRef = ref<any>(null)
+
+const width = computed(() => {
+  return getClientSize().width
+})
+const height = computed(() => {
+  return getClientSize().height
+})
+
+const setIndex = (index: number) => {
+  if (index === curIndex.value) {
+    return
   }
+  curIndex.value = index
 }
+const loginFnc = () => {
+  const account = accountRef.value.value
+  const pwd = pwdRef.value.value
+  const res = login({
+    account: account,
+    pwd: pwd
+  })
+  // res
+  //   .then((data) => {
+  //     setClientName(data.name)
+  //     setClientToken(data.token)
+  //     router.push('/')
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+const signup = () => {
+  const res = register({
+    email: signEmailRef.value,
+    nickname: signNameRef.value,
+    pwd: signPwdRef.value,
+    recipient: signRecipientRef.value,
+    address: signAddressRef.value,
+    phone: signPhoneRef.value
+  })
+  // res
+  //   .then((data) => {
+  //     setClientName(data.name)
+  //     setClientToken(data.token)
+  //     router.push('/')
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+}
+// export default {
+
+//   methods: {
+//     ...mapMutations({
+//       setClientName: 'SET_CLIENT_NAME',
+//       setClientToken: 'SET_CLIENT_TOKEN'
+//     }),
+
+//   }
+// }
 </script>
 
 <style scoped lang="less">

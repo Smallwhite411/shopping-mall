@@ -32,18 +32,20 @@
     </ul>
     <button @click="updateUserData" class="saveBtn">保存</button>
     <Popup title="修改密码" @popupClose="closePopup" v-show="popupShow">
-      <div class="popupContent" slot="popupContent">
-        <input type="password" v-model="oldPwd" placeholder="请输入原密码" />
-        <input type="password" v-model="newPwd" placeholder="请输入新密码" />
-        <input type="password" v-model="confirmPwd" placeholder="请再次输入新密码" />
-        <button @click="updatePwd">确认修改</button>
-      </div>
+      <slot name="popupContent">
+        <div class="popupContent">
+          <input type="password" v-model="oldPwd" placeholder="请输入原密码" />
+          <input type="password" v-model="newPwd" placeholder="请输入新密码" />
+          <input type="password" v-model="confirmPwd" placeholder="请再次输入新密码" />
+          <button @click="updatePwd">确认修改</button>
+        </div>
+      </slot>
     </Popup>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { getUserData, updateUserData, updatePwd } from '../../api/client'
+import { getUserData, updateUserData, updatePwd } from '@/api/client'
 import Popup from '@/components/pop-up/index.vue'
 
 const id = ref('')
@@ -107,11 +109,11 @@ const updatePwds = () => {
       alert(e)
     })
 }
-
+const clientToken = ref('')
 onMounted(() => {
   const res = getUserData(clientToken.value)
   res
-    .then((data) => {
+    .then((data: any) => {
       id.value = data.id
       headimg.value = data.headimg
       email.value = data.email

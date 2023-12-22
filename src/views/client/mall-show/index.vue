@@ -1,19 +1,21 @@
 <template>
   <div class="MallShow">
     <FixedNav v-show="navShouldFixed">
-      <div slot="navContent" class="container fixedNavContainer">
-        <h3 class="fixedLeft" @click="navTo('/mall/show/index')">MoreMall</h3>
-        <ul class="fixedRight">
-          <li
-            v-for="(item, index) in typeList"
-            :key="'type' + item.id"
-            :class="{ selected: judgeCurPath(item.id) }"
-            @click="selectType(item.id)"
-          >
-            {{ item.name }}
-          </li>
-        </ul>
-      </div>
+      <slot name="navContent">
+        <div class="container fixedNavContainer">
+          <h3 class="fixedLeft" @click="navTo('/mall/show/index')">MoreMall</h3>
+          <ul class="fixedRight">
+            <li
+              v-for="item in typeList"
+              :key="'type' + item.id"
+              :class="{ selected: judgeCurPath(item.id) }"
+              @click="selectType(item.id)"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+        </div></slot
+      >
     </FixedNav>
     <div class="logo">
       <img src="../../assets/img/index1.gif" />
@@ -28,9 +30,9 @@
         <i class="iconfont icon-search" @click="searchConfirm" />
       </div>
     </div>
-    <ul ref="typeList" class="typeList">
+    <ul ref="typeListRef" class="typeList">
       <li
-        v-for="(item, index) in typeList"
+        v-for="item in typeList"
         :key="'type' + item.id"
         :class="{ selected: judgeCurPath(item.id) }"
         @click="selectType(item.id)"
@@ -42,110 +44,102 @@
   </div>
 </template>
 
-<script>
-import { getTypes, getGoodsList } from '../../api/client'
-import TipsInput from '../../components/TipsInput'
-import FixedNav from '../../components/FixedNav'
+<script lang="ts" setup>
+import { getTypes, getGoodsList } from '@/api/client'
+import TipsInput from '@/components/tips-input/index.vue'
+import FixedNav from '@/components/fixed-nav/index.vue'
 
-export default {
-  name: 'MallShow',
-  components: {
-    TipsInput,
-    FixedNav
-  },
-  computed: {
-    curPath() {
-      return this.$route.path
+const typeList = ref<any>([])
+const typeListRef = ref<any>()
+const searchText = ref('')
+const tips = ref(['aa', 'bb', 'cc'])
+const navShouldFixed = ref(false)
+const router = useRouter()
+const route = useRoute()
+
+const curPath = computed(() => {
+  return route.path
+})
+
+const navTo = (route: string) => {
+  router.push(route)
+}
+const judgeCurPath = (typeId: number) => {
+  if (typeId === -1) {
+    if (curPath.value.indexOf('/show/index') > -1) {
+      return true
+    } else {
+      return false
     }
-  },
-  data() {
-    return {
-      typeList: [],
-      searchText: '',
-      tips: ['aa', 'bb', 'cc'],
-      navShouldFixed: false
-    }
-  },
-
-  methods: {
-    navTo(route) {
-      this.$router.push(route)
-    },
-    judgeCurPath(typeId) {
-      if (typeId === -1) {
-        if (this.curPath.indexOf('/show/index') > -1) {
-          return true
-        } else {
-          return false
-        }
-      } else {
-        if (this.curPath.indexOf(`/show/goodsList/${typeId}`) > -1) {
-          return true
-        } else {
-          return false
-        }
-      }
-    },
-    selectType(typeId) {
-      //首页
-      if (typeId === -1) {
-        this.navTo('/mall/show/index')
-      } else {
-        this.navTo('/mall/show/goodsList/' + typeId + '/all')
-      }
-    },
-    searchTip(tip) {
-      alert(tip)
-    },
-    searchTextChange(text) {},
-    searchConfirm() {
-      if (this.searchText.trim().length <= 0) {
-        alert('输入不能为空！')
-        return
-      }
-      this.navTo(`/mall/show/goodsList/0/${this.searchText}`)
-    },
-    scrollHandle() {
-      const top = this.$refs.typeList.getBoundingClientRect().top
-      //还未到顶
-      if (top > 0) {
-        this.navShouldFixed = false
-      }
-      //已经到顶
-      else {
-        this.navShouldFixed = true
-      }
-    }
-  },
-
-  mounted() {
-    //获取数据
-    const res = getTypes()
-    res
-      .then((data) => {
-        data.unshift({
-          id: -1,
-          name: '首页'
-        })
-        this.typeList = data
-      })
-      .catch((e) => {
-        alert(e)
-      })
-
-    //监听滚动事件
-    document.addEventListener('scroll', this.scrollHandle, false)
-  },
-
-  destroyed() {
-    document.removeEventListener('scroll', this.scrollHandle, false)
-  },
-  watch: {
-    searchText(newVal, oldVal) {
-      this.searchTextChange(newVal)
+  } else {
+    if (curPath.value.indexOf(`/show/goodsList/${typeId}`) > -1) {
+      return true
+    } else {
+      return false
     }
   }
 }
+const selectType = (typeId: number) => {
+  //首页
+  if (typeId === -1) {
+    navTo('/mall/show/index')
+  } else {
+    navTo('/mall/show/goodsList/' + typeId + '/all')
+  }
+}
+const searchTip = (tip: string) => {
+  alert(tip)
+}
+const searchTextChange = (text: string) => {
+  console.log(text)
+}
+const searchConfirm = () => {
+  if (searchText.value.trim().length <= 0) {
+    alert('输入不能为空！')
+    return
+  }
+  navTo(`/mall/show/goodsList/0/${searchText.value}`)
+}
+const scrollHandle = () => {
+  const top = typeListRef.value.getBoundingClientRect().top
+  //还未到顶
+  if (top > 0) {
+    navShouldFixed.value = false
+  }
+  //已经到顶
+  else {
+    navShouldFixed.value = true
+  }
+}
+
+watch(
+  () => searchText.value,
+  (newVal) => {
+    searchTextChange(newVal)
+  }
+)
+
+onMounted(() => {
+  //获取数据
+  // const res = getTypes()
+  // res
+  //   .then((data) => {
+  //     data.unshift({
+  //       id: -1,
+  //       name: '首页'
+  //     })
+  //     typeList.value = data
+  //   })
+  //   .catch((e) => {
+  //     alert(e)
+  //   })
+
+  // //监听滚动事件
+  document.addEventListener('scroll', scrollHandle, false)
+})
+onDeactivated(() => {
+  document.removeEventListener('scroll', scrollHandle, false)
+})
 </script>
 
 <style scoped lang="less">
