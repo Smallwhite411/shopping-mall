@@ -352,7 +352,7 @@ const clientToken = ref('')
 </script>
 
 <style scoped lang="less">
-@import '../../assets/css/var.less';
+@import '../../../assets/css/var.less';
 .GoodsDetail {
   .content {
     width: 100%;

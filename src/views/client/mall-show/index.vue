@@ -18,7 +18,7 @@
       >
     </FixedNav>
     <div class="logo">
-      <img src="../../assets/img/index1.gif" />
+      <img src="../../../assets/img/index1.gif" />
       <div class="searchBox">
         <TipsInput
           placeholder="请输入商品关键字"
@@ -143,7 +143,7 @@ onDeactivated(() => {
 </script>
 
 <style scoped lang="less">
-@import '../../assets/css/var.less';
+@import '../../../assets/css/var.less';
 .MallShow {
   width: 100%;
   .logo {

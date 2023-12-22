@@ -101,7 +101,7 @@ const signup = () => {
 </script>
 
 <style scoped lang="less">
-@import '../../assets/css/var.less';
+@import '../../../assets/css/var.less';
 .ClientLogin {
   background-color: @bgColor;
   position: relative;

@@ -20,7 +20,7 @@
         <router-view></router-view>
       </div>
       <div class="fixedAd">
-        <img src="../../assets/img/index2.gif" alt="" />
+        <img src="../../../assets/img/index2.gif" alt="" />
         <ul class="fixedList">
           <li>
             <i class="iconfont icon-collection_fill" />
@@ -62,7 +62,7 @@
         </div>
         <div class="code footerItem">
           <p class="title">扫码下载APP</p>
-          <img src="../../assets/img/code.png" alt="" />
+          <img src="../../../assets/img/code.png" alt="" />
           <span>下载领1000元新人礼包</span>
         </div>
       </div>

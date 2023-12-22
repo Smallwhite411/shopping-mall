@@ -8,7 +8,7 @@
 <script lang="ts" setup></script>
 
 <style scoped lang="less">
-@import '../assets/css/var.less';
+@import '../../../assets/css/var.less';
 .ErrorPage {
   text-align: center;
   background-color: @mainColor;

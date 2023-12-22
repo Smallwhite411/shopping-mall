@@ -22,7 +22,60 @@ const router = createRouter({
     {
       path: '/mall-index',
       name: 'MallIndex',
-      component: MallIndex
+      component: Mall,
+      redirect: '/mall-index/show',
+      children: [
+        {
+          path: 'show',
+          name: 'MallShow',
+          component: MallShow,
+          redirect: '/mall-index/show/index',
+          children: [
+            {
+              path: 'index',
+              name: 'MallIndex',
+              component: MallIndex
+            }, {
+              path: 'goodsList/:typeId/:keyword',
+              name: 'GoodsList',
+              component: GoodsList
+            },
+          ]
+        }, {
+          path: 'goods/:id',
+          name: 'GoodsDetail',
+          component: GoodsDetail
+        }, {
+          path: 'personal-page',
+          name: 'PersonalPage',
+          component: PersonalPage,
+          redirect: '/mall-index/personal/cart',
+          children: [
+            {
+              path: 'shopping-car',
+              name: 'ShoppingCar',
+              component: ShoppingCar,
+              meta: {
+                requireLogin: true,
+              },
+            }, {
+              path: 'myData',
+              name: 'MyData',
+              component: MyData,
+              meta: {
+                requireLogin: true,
+              },
+            }, {
+              path: 'myOrder',
+              name: 'MyOrder',
+              component: MyOrder,
+              meta: {
+                requireLogin: true,
+              },
+            }
+          ]
+        }
+      ]
     }
   ]
 })

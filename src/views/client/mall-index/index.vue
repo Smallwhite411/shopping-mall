@@ -2,13 +2,13 @@
   <div class="MallIndex">
     <FadeSwiper class="swiperBox" :width="clientWidth" height="420px">
       <slot name="item1">
-        <img class="banner" src="../../assets/img/banner1.jpg" />
+        <img class="banner" src="../../../assets/img/banner1.jpg" />
       </slot>
       <slot name="item2">
-        <img class="banner" src="../../assets/img/banner2.jpg" />
+        <img class="banner" src="../../../assets/img/banner2.jpg" />
       </slot>
       <slot name="item3">
-        <img class="banner" src="../../assets/img/banner3.jpg" />
+        <img class="banner" src="../../../assets/img/banner3.jpg" />
       </slot>
     </FadeSwiper>
     <section class="newGoods section">

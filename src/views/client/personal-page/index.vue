@@ -45,7 +45,7 @@ const curPath = ref(route.path)
 </script>
 
 <style scoped lang="less">
-@import '../../assets/css/var.less';
+@import '../../../assets/css/var.less';
 .Personal {
   padding-top: 20px;
   .titleList {
