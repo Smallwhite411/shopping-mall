@@ -1,10 +1,10 @@
 <template>
   <li class="GoodsItem">
     <div class="imgBox">
-      <img :src="img" alt="商品图片" @click="navTo('/mall/goods/' + id)" />
+      <img :src="img" alt="商品图片" @click="navTo('/mall-index/goods/' + id)" />
     </div>
     <div class="goodsInfo">
-      <span class="goodsName ellipsis" @click="navTo('/mall/goods/' + id)">{{ name }}</span>
+      <span class="goodsName ellipsis" @click="navTo('/mall-index/goods/' + id)">{{ name }}</span>
       <span class="price">{{ '¥' + price }}</span>
     </div>
   </li>

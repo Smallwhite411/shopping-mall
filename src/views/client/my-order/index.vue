@@ -31,7 +31,7 @@
           <div class="orderDetail">
             <img :src="item.goods.img" alt="商品图片" />
             <div class="goodsName">
-              <p @click="navTo('/mall/goods/' + item.goods.id)">{{ item.goods.name }}</p>
+              <p @click="navTo('/mall-index/goods/' + item.goods.id)">{{ item.goods.name }}</p>
               <span>{{ item.goods.spec }}</span>
             </div>
             <span class="unitPrice">{{ '￥' + item.goods.unitPrice }}</span>

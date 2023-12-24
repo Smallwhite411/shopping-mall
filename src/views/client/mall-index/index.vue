@@ -50,7 +50,7 @@
           <li v-for="item in goodsList.slice(0, 4)" :key="item.id">
             <img class="leftImg" :src="item.img" />
             <div class="rightBox">
-              <p class="goodsName ellipsis" @click="navTo('/mall/goods/' + item.id)">
+              <p class="goodsName ellipsis" @click="navTo('/mall-index/goods/' + item.id)">
                 {{ item.name }}
               </p>
               <div class="less">
@@ -61,7 +61,7 @@
                 <span class="nowPrice">限时价¥{{ item.price }}</span>
                 <span class="beforePrice">原价¥{{ item.price + 60 }}</span>
               </div>
-              <div class="buyBtn" @click="navTo('/mall/goods/' + item.id)">立即抢购</div>
+              <div class="buyBtn" @click="navTo('/mall-index/goods/' + item.id)">立即抢购</div>
             </div>
           </li>
         </ul>
@@ -392,13 +392,15 @@ onDeactivated(() => {
           overflow: hidden;
           .leftImg {
             width: 180px;
-            height: 100%;
+            height: 180px;
+            object-fit: contain;
             display: inline-block;
           }
           .rightBox {
             display: inline-block;
             width: 240px;
             height: 100%;
+            margin-left: 20px;
             overflow: hidden;
             .goodsName {
               font-size: 15px;

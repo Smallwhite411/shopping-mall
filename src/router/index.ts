@@ -49,7 +49,7 @@ const router = createRouter({
           path: 'personal-page',
           name: 'PersonalPage',
           component: PersonalPage,
-          redirect: '/mall-index/personal/cart',
+          redirect: '/mall-index/personal-page/shopping-car',
           children: [
             {
               path: 'shopping-car',

@@ -200,6 +200,7 @@ const changeIndex = (i: number) => {
 }
 
 const getGoodsInfoFnc = (id: string | string[]) => {
+  goodsImg.value = goodsList.value[0].img
   // const res = getGoodsInfo(id)
   // res
   //   .then((data) => {
@@ -327,14 +328,14 @@ const getTypeGoodsList = (typeId: string | string[]) => {
 watch(
   () => route,
   (to) => {
-    getGoodsInfo(to.params.id)
+    getGoodsInfoFnc(to.params.id)
     getGoodsMsg(to.params.id)
     getComment(to.params.id)
   }
 )
 
 onMounted(() => {
-  getGoodsInfo(id.value)
+  getGoodsInfoFnc(id.value)
   getGoodsMsg(id.value)
   getComment(id.value)
 })
