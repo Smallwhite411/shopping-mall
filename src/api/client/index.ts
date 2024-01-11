@@ -1,4 +1,4 @@
-import { post, get } from '@/libs/http/index'
+import { request } from "@/utils/service"
 /**
  * @function login 用户登录
  * @function register 用户注册
@@ -22,7 +22,13 @@ import { post, get } from '@/libs/http/index'
  */
 
 export const login: AxiosResponseI<any, any> = (data) => { }
-export const register: AxiosResponseI<any, any> = (data) => { }
+export const register: AxiosResponseI<any, any> = (data) => {
+    return request({
+        url: '/client/register',
+        method: "post",
+        data
+    })
+}
 export const getTypes: AxiosResponseI<any, any> = (data) => { }
 export const getGoodsList: AxiosResponseI<any, any> = (data) => { }
 export const getGoodsInfo: AxiosResponseI<any, any> = (data) => { }

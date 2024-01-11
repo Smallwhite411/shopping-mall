@@ -9,6 +9,7 @@ import MyOrder from '@/views/client/my-order/index.vue'
 import MyData from '@/views/client/my-data/index.vue'
 import GoodsList from '@/views/client/goods-list/index.vue'
 import GoodsDetail from '@/views/client/goods-detail/index.vue'
+import Register from '@/views/client/register-page/index.vue'
 import MallLogin from '@/views/client/mall-login/index.vue'
 
 
@@ -76,6 +77,11 @@ const router = createRouter({
           ]
         }
       ]
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
     }
   ]
 })
