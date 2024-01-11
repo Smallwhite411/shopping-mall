@@ -45,7 +45,7 @@
               />
             </el-form-item>
             <div class="register-bottom">
-              <el-button @click="userRegister">注册</el-button>
+              <el-button @click="userRegister(registerFormRef)">注册</el-button>
             </div>
           </el-form>
         </div>
@@ -81,6 +81,10 @@
 <script lang="ts" setup>
 import { validateValue } from '@/utils/validate'
 import { register } from '@/api/client/index'
+import { ElMessage } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
+const registerFormRef = ref<FormInstance>()
+  const router = useRouter();
 const registerForm = ref({
   email: '',
   phone: '',
@@ -111,7 +115,7 @@ const validor = (rule: any, value: any, callback: any) => {
   callback()
 }
 
-const rules = reactive<any>({
+const rules = reactive<FormRules<any>>({
   phone: [
     { required: true, trigger: 'blur', message: '请输入手机号' },
     {
@@ -135,14 +139,23 @@ const rules = reactive<any>({
   ]
 })
 
-const userRegister = () => {
-  register(registerForm.value)
-    .then((res) => {
-      console.log(res)
-    })
-    .catch(() => {
-      console.log('错误抛出')
-    })
+const userRegister = async (formEl: any) => {
+  if (!formEl) return
+  await formEl.validate((valid: any) => {
+    if (valid) {
+      register(registerForm.value)
+        .then((res) => {
+          console.log(res)
+          ElMessage.success(res.message)
+          router.push({
+            path: '/'
+          })
+        })
+        .catch(() => {
+          console.log('错误抛出')
+        })
+    }
+  })
 }
 </script>
 <style lang="scss" scoped>
