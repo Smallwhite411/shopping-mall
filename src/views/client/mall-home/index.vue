@@ -2,16 +2,16 @@
   <div class="Mall">
     <header>
       <div class="container clear">
-        <span class="title" @click="navTo('/mall')">MoreMall 一站式选购平台</span>
+        <span class="title" @click="navTo('/mall-index')">MoreMall 一站式选购平台</span>
         <NoticeList :notices="notices" />
-        <div class="right" v-if="clientToken">
-          <span class="name">欢迎您，{{ clientName }}</span>
+        <div class="right" v-if="userStore.getToken !== ''">
+          <span class="name">欢迎您，{{ clientMessage?.nickname }}</span>
           <span @click="navTo('/mall-index/personal-page')">个人中心</span>
           <span @click="logout">退出登录</span>
         </div>
         <div class="right" v-else>
           <span @click="navTo('/login')">登录</span>
-          <span @click="navTo('/login')">注册</span>
+          <span @click="navTo('/register')">注册</span>
         </div>
       </div>
     </header>
@@ -105,19 +105,24 @@
 <script lang="ts" setup>
 import NoticeList from '@/components/notice-list/index.vue'
 import { getClientSize, backToTop } from '@/libs/utils'
+import { useUserStore } from '@/stores/modules/user'
 const router = useRouter()
+const userStore = useUserStore()
 const notices = reactive<Array<string>>([
   '今日疯抢：牛皮防水男靴仅229元！直减2...',
   '【福利】领1000元APP新人礼'
 ])
 const shouldShowBT = ref<boolean>(false)
 const clientHeight = ref(getClientSize().height)
-const clientName = ref('')
+const clientMessage = ref<AuthInfoType>()
 const navTo = (route: string) => {
   router.push({ path: route })
 }
 const logout = () => {
   // clientLogout()
+  userStore.removeAuthInfo()
+  userStore.removeToken()
+  router.push({ path: '/' })
   router.go(0)
 }
 const backToTopFn = () => {
@@ -133,29 +138,20 @@ const watchScrollTop = () => {
   }
 }
 
-const clientToken = ()=>{
+const clientToken = () => {
+  console.log('clientToken', userStore.getToken)
 
+  return userStore.getToken
 }
 
 onMounted(() => {
+  clientMessage.value = userStore.getAuthInfo
   document.addEventListener('scroll', watchScrollTop, false)
 })
 
 onDeactivated(() => {
   document.removeEventListener('scroll', watchScrollTop, false)
 })
-
-// export default {
-//   name: 'Mall',
-//   computed: {
-//     ...mapState(['clientToken', 'clientName'])
-//   },
-
-//   methods: {
-//     ...mapMutations({
-//       clientLogout: 'CLIENT_LOGOUT'
-//     })
-//   },
 </script>
 
 <style scoped lang="less">

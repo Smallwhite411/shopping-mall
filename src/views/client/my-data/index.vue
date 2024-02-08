@@ -7,30 +7,30 @@
       </li>
       <li>
         <span>账号</span>
-        <p>{{ email }}</p>
+        <p>{{ userMessage?.email }}</p>
       </li>
       <li>
         <span>昵称</span>
-        <input type="text" v-model="nickname" />
+        <input type="text" v-model="userMessage!.nickname" />
       </li>
       <li>
         <span>收件人</span>
-        <input type="text" v-model="recipient" />
+        <input type="text" v-model="userMessage!.recipient" />
       </li>
       <li>
         <span>收件地址</span>
-        <input type="text" class="long" v-model="address" />
+        <input type="text" class="long" v-model="userMessage!.shippingAddress" />
       </li>
       <li>
         <span>联系电话</span>
-        <input type="text" v-model="phone" />
+        <input type="text" v-model="userMessage!.phone" />
       </li>
       <li>
         <span>密码</span>
         <button @click="showPopup">修改密码</button>
       </li>
     </ul>
-    <button @click="updateUserData" class="saveBtn">保存</button>
+    <button @click="updateUserDatas" class="saveBtn">保存</button>
     <Popup title="修改密码" @popupClose="closePopup" v-show="popupShow">
       <template #popupContent>
         <div class="popupContent">
@@ -45,22 +45,32 @@
 </template>
 
 <script lang="ts" setup>
-import { getUserData, updateUserData, updatePwd } from '@/api/client'
+import { changeUserMessage, updatePwd } from '@/api/client'
 import Popup from '@/components/pop-up/index.vue'
+import { useUserStore } from '@/stores/modules/user'
 
+const userStore = useUserStore()
+const userMessage = ref<AuthInfoType>({
+  nickname: '',
+  recipient: '',
+  shippingAddress: '',
+  phone: '',
+  email: ''
+})
 const id = ref('')
 const headimg = ref('')
-const email = ref('')
-const nickname = ref('')
-const recipient = ref('')
-const address = ref('')
-const phone = ref('')
 const popupShow = ref(false)
 const oldPwd = ref('')
 const newPwd = ref('')
 const confirmPwd = ref('')
 
 const updateUserDatas = () => {
+  changeUserMessage({
+    nickname: userMessage.value.nickname,
+    recipient: userMessage.value.recipient,
+    shippingAddress: userMessage.value.shippingAddress,
+    phone: userMessage.value.phone
+  }).then((res: any) => {})
   // const res = updateUserData({
   //   id: id.value,
   //   nickname: nickname.value,
@@ -109,22 +119,9 @@ const updatePwds = () => {
       alert(e)
     })
 }
-const clientToken = ref('')
 onMounted(() => {
-  const res = getUserData(clientToken.value)
-  res
-    .then((data: any) => {
-      id.value = data.id
-      headimg.value = data.headimg
-      email.value = data.email
-      nickname.value = data.nickname
-      recipient.value = data.recipient
-      address.value = data.address
-      phone.value = data.phone
-    })
-    .catch((e: HTMLElement) => {
-      alert(e)
-    })
+  userMessage.value = userStore.getAuthInfo
+  console.log('userMessage', userMessage.value)
 })
 
 //   computed:{

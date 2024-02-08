@@ -1,7 +1,6 @@
 <template>
   <div
     class="FadeSwiper"
-    :style="{ width: width, height: height }"
     @mouseover.stop="clearTimer"
     @mouseout.stop="setTimer"
   >
@@ -29,16 +28,6 @@
 </template>
 
 <script lang="ts" setup>
-defineProps({
-  width: {
-    type: String,
-    default: ''
-  },
-  height: {
-    type: String,
-    default: ''
-  }
-})
 const len = ref(2)
 // const len = ref(Object.keys($slots).length)
 const curIndex = ref(0)
@@ -82,6 +71,8 @@ onDeactivated(() => {
 .FadeSwiper {
   position: relative;
   overflow: hidden;
+  height: 420px;
+  width: 100%;
   .swiperWrapper {
     width: 100%;
     height: 100%;

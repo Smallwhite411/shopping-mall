@@ -1,9 +1,9 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios"
-import { useUserStoreHook } from "@/store/modules/user"
 import { ElMessage } from "element-plus"
 import { get } from "lodash-es"
-import { getToken } from "../utils/index"
+import { useUserStore } from "@/stores/modules/user"
 
+const userStore = useUserStore()
 /** 封装的axios 网络请求 */
 function createService() {
     // 创建一个 Axios 实例
@@ -46,7 +46,7 @@ function createService() {
                     break
                 case 401:
                     // Token 过期时，直接退出登录并强制刷新页面（会重定向到登录页）
-                    useUserStoreHook().logout()
+                    // useUserStoreHook().logout()
                     location.reload()
                     break
                 case 403:
@@ -92,7 +92,7 @@ function createRequestFunction(service: AxiosInstance) {
         const configDefault = {
             headers: {
                 // 携带 Token
-                Authorization: "Bearer " + getToken(),
+                Authorization: userStore.getToken,
                 "Content-Type": get(config, "headers.Content-Type", "application/json")
             },
             timeout: 5000,

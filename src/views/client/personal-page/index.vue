@@ -2,8 +2,8 @@
   <div class="Personal">
     <ul class="titleList">
       <li
-        :class="{ selected: curPath === '/mall-index/personal-page/cart' }"
-        @click="navTo('/mall-index/personal-page/cart')"
+        :class="{ selected: curPath === '/mall-index/personal-page/shopping-car' }"
+        @click="navTo('/mall-index/personal-page/shopping-car')"
       >
         购物车
       </li>
@@ -41,7 +41,6 @@ watch(
 )
 const curPath = ref(route.path)
 
-// ...mapState(['clientToken', 'clientName'])
 </script>
 
 <style scoped lang="less">

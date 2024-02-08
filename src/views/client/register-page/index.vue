@@ -4,7 +4,7 @@
     <div class="content">
       <div class="content-header">
         <div>注册新用户</div>
-        <div>我有账号，去登陆</div>
+        <div @click="openLogin">我有账号，去登陆</div>
       </div>
       <div class="input-flex">
         <div class="input-rule">
@@ -84,7 +84,7 @@ import { register } from '@/api/client/index'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 const registerFormRef = ref<FormInstance>()
-  const router = useRouter();
+const router = useRouter()
 const registerForm = ref({
   email: '',
   phone: '',
@@ -156,6 +156,10 @@ const userRegister = async (formEl: any) => {
         })
     }
   })
+}
+
+const openLogin = () => {
+  router.push({ path: '/login' })
 }
 </script>
 <style lang="scss" scoped>

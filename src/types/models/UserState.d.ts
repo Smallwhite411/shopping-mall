@@ -1,9 +1,11 @@
 interface UserState {
     token: string
-    authInfo: AuthInfoType
+    authInfo: AuthInfoType | {}
 }
 interface AuthInfoType {
-    username: string
+    nickname: string
     phone: string
     email: string
+    shippingAddress: string
+    recipient: string
 }

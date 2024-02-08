@@ -223,9 +223,48 @@ const goodsList = ref<any>([
 const initTimestamp = ref<any>(0)
 const newTimestamp = ref<any>(0)
 const timer = ref<any>(null)
-const h = ref('0')
+// 需要获取距离结束还剩多少时间的一个接口
+
+const h = ref('12')
 const m = ref('0')
-const s = ref('0')
+const s = ref('05')
+const countTime = () => {
+  //倒计时
+  var startTime = new Date().getTime()
+  var endTime = new Date('2024-1-14 00:00:00').getTime()
+  var time = startTime - endTime //差值
+
+  // alert(time)
+  setInterval(function () {
+    var day = Math.floor(time / 1000 / 60 / 60 / 24)
+    if (String(Math.floor((time / 1000 / 60 / 60) % 24)).length > 1) {
+      h.value = String(Math.floor((time / 1000 / 60 / 60) % 24))
+    } else {
+      h.value = String('0' + Math.floor((time / 1000 / 60 / 60) % 24))
+    }
+    if (String(Math.floor((time / 1000 / 60) % 60)).length > 1) {
+      m.value = String(Math.floor((time / 1000 / 60) % 60))
+    } else {
+      m.value = String('0' + Math.floor((time / 1000 / 60) % 60))
+    }
+    if (String(Math.floor((time / 1000) % 60)).length > 1) {
+      s.value = String(Math.floor((time / 1000) % 60))
+    } else {
+      s.value = String('0' + Math.floor((time / 1000) % 60))
+    }
+
+    // s.value = Math.floor((time / 1000) % 60)
+    // console.log(hours + "小时");
+    // console.log(minutes + "分钟");
+    // console.log(second + '秒');
+    time -= 1000
+  }, 1000)
+  if (time == 0) {
+    clearInterval(time) //如果时间差为0，则清除定时器
+  }
+}
+countTime()
+
 const router = useRouter()
 
 const clientWidth = computed(() => {

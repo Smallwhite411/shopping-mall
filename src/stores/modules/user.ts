@@ -6,21 +6,18 @@ export const useUserStore = defineStore({
     id: STORE_KEY,
     state: (): UserState => ({
         token: '',
-        authInfo: {
-            username: '',
-            phone: '',
-            email: '',
-        },
+        authInfo: {},
     }),
     getters: {
         getToken: (state: UserState): string => {
             return state.token
         },
         getAuthInfo: (state: UserState): AuthInfoType => {
-            return state.authInfo
+            return state.authInfo as AuthInfoType
         },
     },
     actions: {
+        // 每个用户都有对应的token
         setToken(data: string) {
             this.token = data
         },
@@ -31,11 +28,7 @@ export const useUserStore = defineStore({
             this.authInfo = data
         },
         removeAuthInfo() {
-            this.authInfo = {
-                username: '',
-                phone: '',
-                email: '',
-            }
+            this.authInfo = {}
         },
     },
     persist: {
@@ -43,7 +36,11 @@ export const useUserStore = defineStore({
         strategies: [
             {
                 storage: localStorage, // $localStorage,
-                paths: ['token', 'authInfo'], //可以选择保存的字段  其余的不保存
+                paths: ['token'], //可以选择保存的字段  其余的不保存
+            },
+            {
+                storage: sessionStorage,
+                paths: ['authInfo'],
             },
         ],
     },
