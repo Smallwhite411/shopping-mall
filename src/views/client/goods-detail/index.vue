@@ -155,7 +155,16 @@ const askContent = ref<any>('')
 const tagList = ref<any>(['评价', '商品问答'])
 const curIndex = ref<any>(0)
 const rate = ref<any>('')
-const commentList = ref<any>([])
+const commentList = ref<any>([{
+  user:{
+    headimg:'',
+    nickname:'大白菜'
+  },
+  time:'2024-10-02', //时间
+  comment:'', //评论
+  rate:'', //速率
+  score:'', //评分
+}])
 const goodsList = ref<any>([
   {
     id: 1,

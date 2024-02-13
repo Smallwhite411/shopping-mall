@@ -58,6 +58,16 @@ export const changeUserMessage: AxiosResponseI<any, any> = (data) => {
         data
     })
 }
+
+// 删除购物车中的商品
+export const deleteOrder: AxiosResponseI<any, any> = (data) => {
+    return request({
+        url: '',
+        method: 'post',
+        data
+    })
+}
+
 export const getTypes: AxiosResponseI<any, any> = (data) => { }
 export const getGoodsList: AxiosResponseI<any, any> = (data) => { }
 export const getGoodsInfo: AxiosResponseI<any, any> = (data) => { }
@@ -65,7 +75,6 @@ export const getGoodsMsg: AxiosResponseI<any, any> = (data) => { }
 export const askGoodsMsg: AxiosResponseI<any, any> = (data) => { }
 export const addOrder: AxiosResponseI<any, any> = (data) => { }
 export const getOrderByState: AxiosResponseI<any, any> = (data) => { }
-export const deleteOrder: AxiosResponseI<any, any> = (data) => { }
 export const confirmReceive: AxiosResponseI<any, any> = (data) => { }
 export const pay: AxiosResponseI<any, any> = (data) => { }
 export const getUserData: AxiosResponseI<any, any> = (data) => { }

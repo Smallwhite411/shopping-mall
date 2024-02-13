@@ -46,8 +46,32 @@
 import { getOrderByState, deleteOrder, settleAccounts } from '@/api/client'
 import NumberInput from '@/components/number-input/index.vue'
 
-const orderList = ref<Array<any>>([])
-const clientToken = ref('')
+const orderList = ref<Array<any>>([
+  {
+    id: '122',
+    goods: {
+      name: '秋裤', //物品名称
+      id: '2',
+      img: '/assets/img/code.png', //图片地址
+      spec: '这是一件秋裤', //描述
+      unitPrice: 888, //单价
+    },
+    temGoodsNum: 1,
+    amount: 888 //总价
+  },
+  {
+    id: '123',
+    goods: {
+      name: '秋裤', //物品名称
+      id: '3',
+      img: '/assets/img/code.png', //图片地址
+      spec: '这是一件秋裤', //描述
+      unitPrice: 888, //单价
+    },
+    temGoodsNum: 1,
+    amount: 888 //总价
+  }
+])
 const router = useRouter()
 const totalAmount = computed(() => {
   let amount = 0
@@ -73,9 +97,16 @@ const getOrderByStateFnc = (state: any) => {
 }
 const numberChange = (orderId: any) => {
   orderList.value.map((item) => {
+    console.log(
+      orderId,
+      item.temGoodsNum * item.goods.unitPrice,
+      item.temGoodsNum,
+      item.goods.unitPrice,
+      orderId === item.id
+    )
     if (orderId === item.id) {
       item.amount = item.temGoodsNum * item.goods.unitPrice
-      console.log(item.temGoodsNum, item.goods.unitPrice)
+      console.log(item.temGoodsNum, item, item.goods.unitPrice)
     }
   })
 }

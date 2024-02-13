@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-import { changeUserMessage, updatePwd } from '@/api/client'
+import { changeUserMessage, getUserMessage, updatePwd } from '@/api/client'
 import Popup from '@/components/pop-up/index.vue'
 import { useUserStore } from '@/stores/modules/user'
 
@@ -70,22 +70,11 @@ const updateUserDatas = () => {
     recipient: userMessage.value.recipient,
     shippingAddress: userMessage.value.shippingAddress,
     phone: userMessage.value.phone
-  }).then((res: any) => {})
-  // const res = updateUserData({
-  //   id: id.value,
-  //   nickname: nickname.value,
-  //   recipient: recipient.value,
-  //   address: address.value,
-  //   phone: phone.value
-  // })
-  // res
-  //   .then(() => {
-  //     alert('修改成功!')
-  //     setClientName(nickname.value)
-  //   })
-  //   .catch((e) => {
-  //     alert(e)
-  //   })
+  }).then((res: any) => {
+    if (res.code === 200) {
+      getUserMessage()
+    }
+  })
 }
 
 const closePopup = () => {

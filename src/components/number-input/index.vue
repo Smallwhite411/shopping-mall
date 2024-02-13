@@ -24,11 +24,11 @@ const props = defineProps({
     default: 1
   }
 })
-const emit = defineEmits(['input', 'changeHandle'])
+const emit = defineEmits(['input', 'changeHandle', 'update:modelValue'])
 const num = ref(props.initNum || props.min)
 const minus = () => {
   if (num.value <= props.min) {
-    return
+    return 1
   }
   num.value = Number(num.value) - 1
 }
@@ -42,6 +42,7 @@ watch(
   () => num.value,
   (newNum) => {
     emit('input', Number(newNum))
+    emit('update:modelValue', Number(newNum))
     emit('changeHandle')
   }
 )
