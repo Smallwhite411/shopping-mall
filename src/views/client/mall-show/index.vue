@@ -48,10 +48,39 @@
 import { getTypes, getGoodsList } from '@/api/client'
 import TipsInput from '@/components/tips-input/index.vue'
 import FixedNav from '@/components/fixed-nav/index.vue'
-
-const typeList = ref<any>([])
+const typeList = ref<any>([
+  {
+    id: -1,
+    name: '首页'
+  },
+  {
+    id: 0,
+    name: '时尚服饰'
+  },
+  {
+    id: 1,
+    name: '数码产品'
+  },
+  {
+    id: 2,
+    name: '食品饮料'
+  },
+  {
+    id: 3,
+    name: '日常用品'
+  },
+  {
+    id: 4,
+    name: '小说书刊'
+  },
+  {
+    id: 5,
+    name: '家用电器'
+  }
+])
 const typeListRef = ref<any>()
 const searchText = ref('')
+// 这个是历史记录
 const tips = ref(['aa', 'bb', 'cc'])
 const navShouldFixed = ref(false)
 const router = useRouter()
@@ -95,6 +124,8 @@ const searchTextChange = (text: string) => {
 }
 const searchConfirm = () => {
   if (searchText.value.trim().length <= 0) {
+    console.log(searchText.value);
+    
     alert('输入不能为空！')
     return
   }
@@ -151,7 +182,6 @@ onDeactivated(() => {
     margin: -10px auto 30px;
     text-align: right;
     user-select: none;
-    vertical-align: middle;
     img {
       display: inline-block;
       width: 33.3%;
@@ -178,7 +208,6 @@ onDeactivated(() => {
   .typeList {
     width: 100%;
     text-align: center;
-    background-color: white;
     li {
       display: inline-block;
       width: 60px;
@@ -186,7 +215,7 @@ onDeactivated(() => {
       text-align: center;
       height: 30px;
       line-height: 20px;
-      font-weight: 600;
+      font-weight: 800;
       font-size: 14px;
       cursor: pointer;
     }

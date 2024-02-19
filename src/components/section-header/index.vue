@@ -50,6 +50,7 @@ defineProps({
     }
   }
   .right {
+    margin-left: 15px;
     display: inline-block;
     vertical-align: middle;
     height: 40px;

@@ -18,6 +18,10 @@ defineProps({
   tips: {
     type: Array,
     default: () => []
+  },
+  modelValue: {
+    type: String,
+    default: ''
   }
 })
 const inputText = ref('')

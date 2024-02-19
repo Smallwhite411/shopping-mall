@@ -280,6 +280,7 @@ const navTo = (path: string) => {
   router.push({ path })
 }
 
+// 点击图片 访问对应的商品详情页
 const selectType = (typeId: number) => {
   if (typeId == -1) {
     return
@@ -347,7 +348,10 @@ onDeactivated(() => {
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     .banner {
-      transform: scale(1.2, 1);
+      //transform: scale(1.2, 1);
+      width: 100%;
+      object-fit: cover;
+      height: 350px;
     }
   }
   .section {

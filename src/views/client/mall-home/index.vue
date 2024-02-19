@@ -5,7 +5,7 @@
         <span class="title" @click="navTo('/mall-index')">MoreMall 一站式选购平台</span>
         <NoticeList :notices="notices" />
         <div class="right" v-if="userStore.getToken !== ''">
-          <span class="name">欢迎您，{{ clientMessage?.nickname }}</span>
+          <span class="name">{{ clientMessage?.nickname }}</span>
           <span @click="navTo('/mall-index/personal-page')">个人中心</span>
           <span @click="logout">退出登录</span>
         </div>
